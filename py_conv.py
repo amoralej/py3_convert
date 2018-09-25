@@ -68,6 +68,8 @@ class SpecPyGeneric:
                 self.data[index] = "%{pyver_install}"
             elif re.search(".*python.*setup.py build", line) or re.search(".*py2_build", line):
                 self.data[index] = "%{pyver_build}"
+            elif re.search("^stestr.*", line):
+                self.data[index] = line.replace("stestr", "stestr-%{pyver}")
             elif "%{__python2}" in line:
                 self.data[index] = line.replace("%{__python2}", "%{pyver_bin}")
 
