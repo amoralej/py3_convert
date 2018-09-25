@@ -59,19 +59,19 @@ class SpecPyGeneric:
             elif "sphinx-build" in line:
                 self.data[index] = line.replace("sphinx-build", "sphinx-build-%{pyver}")
             elif "oslo-config-generator" in line:
-                self.data[index] = line.replace("oslo-config-generator", "oslo-config-generator-%{pyver}")
+                self.data[index] = line.replace("oslo-config-generator ", "oslo-config-generator-%{pyver} ")
             elif "oslopolicy-policy-generator" in line:
-                self.data[index] = line.replace("oslopolicy-policy-generator", "oslopolicy-policy-generator-%{pyver}")
+                self.data[index] = line.replace("oslopolicy-policy-generator ", "oslopolicy-policy-generator-%{pyver} ")
             elif "oslopolicy-sample-generator" in line:
-                self.data[index] = line.replace("oslopolicy-sample-generator", "oslopolicy-sample-generator-%{pyver}")
+                self.data[index] = line.replace("oslopolicy-sample-generator ", "oslopolicy-sample-generator-%{pyver} ")
             elif re.search(".*python.*setup.py.*install", line) or re.search(".*py2_install", line):
                 self.data[index] = "%{pyver_install}"
+            elif "%{__python2}" in line:
+                self.data[index] = line.replace("%{__python2}", "%{pyver_bin}")
             elif re.search(".*python.*setup.py build", line) or re.search(".*py2_build", line):
                 self.data[index] = "%{pyver_build}"
             elif re.search("^stestr.*", line):
                 self.data[index] = line.replace("stestr", "stestr-%{pyver}")
-            elif "%{__python2}" in line:
-                self.data[index] = line.replace("%{__python2}", "%{pyver_bin}")
 
         if len(self.req_excepts) > 0:
             print('# Handle python2 exception\n%if %{pyver} == 2')
